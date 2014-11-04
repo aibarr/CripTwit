@@ -1,6 +1,7 @@
-extend layout
-
-block append content
+body
+	div.page-header(style="margin: 0 20px;")
+			h1 CripTwit
+				small  Laboratorio de Criptografía y Protocolos de seguridad
 	//El usuario debe decir si será emisor o receptor del mensaje
 	div.container#SelecionRol
 		h1 Indique si usted será el emisor o el receptor de la comunicación
@@ -9,4 +10,7 @@ block append content
 					a.btn.btn-default(href='/emision') emisor
 				div.com-md-6
 					a.btn.btn-default(href='#') receptor	
+	div.footer
+			div.container-fluid
+				p.text-muted Laboratorio de Criptografía y Protocolos de seguridad
 	

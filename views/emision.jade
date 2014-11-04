@@ -1,6 +1,9 @@
-extends layout
-//Emisión
-block append content
+//emision
+
+body
+	div.page-header(style="margin: 0 20px;")
+			h1 CripTwit
+				small  Laboratorio de Criptografía y Protocolos de seguridad
 	h3 Emisión de Mensaje
 	//El usuario debe ingresar las claves de la transmisión	
 	div.container#claves
@@ -26,7 +29,10 @@ block append content
 					input.form-control(placeholder='Escriba su mensaje' type='text')
 					span.input-group-btn
 						button.btn.btn-default(type='button') Enviar
-
+	div.footer
+			div.container-fluid
+				p.text-muted Laboratorio de Criptografía y Protocolos de seguridad
+	
 
 		
 script.
