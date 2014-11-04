@@ -1,0 +1,12 @@
+extend layout
+
+block append content
+	//El usuario debe decir si será emisor o receptor del mensaje
+	div.container#SelecionRol
+		h1 Indique si usted será el emisor o el receptor de la comunicación
+			div.row
+				div.col-md-3.col-md-offset-3
+					a.btn.btn-default(href='/emision') emisor
+				div.com-md-6
+					a.btn.btn-default(href='#') receptor	
+	

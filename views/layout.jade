@@ -1,0 +1,25 @@
+doctype html
+html
+	head
+		title= title
+		link(rel='stylesheet', href='/stylesheets/style.css')
+		link(rel='stylesheet', href='/stylesheets/lavish-bootstrap.css')
+		//link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
+		link(rel='stylesheet', href='/bootstrap/css/bootstrap-responsive.min.css')
+		script(src='http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js')
+		script(src='/bootstrap/js/bootstrap.min.js')
+		script(src='/javascrpt/encriptar.js')
+		script(src='/socket.io/socket.io.js')
+	body
+		div.page-header(style="margin: 0 20px;")
+			h1 CripTwit
+				small  Laboratorio de Criptografía y Protocolos de seguridad
+
+		block content
+
+		div.footer
+			div.container-fluid
+				p.text-muted Laboratorio de Criptografía y Protocolos de seguridad
+	
+
+
