@@ -3,9 +3,35 @@ body
 	div.page-header(style="margin: 0 20px;")
 			h1 CripTwit
 				small  Laboratorio de Criptografía y Protocolos de seguridad
-	h1 Recepcion de mensaje
+	h3 Recepcion de mensaje
 	div.container#claves
+		h2 Ingrese las claves de Transmisión
+		div.row
+			form.col-lg-offset-3.col-lg-6#entraClave(role='form')
+				div.form-group
+					input.form-control#vectorInicial(placeholder='Vector Inicial')
+				div.form-group
+					input.form-control#clave1(placeholder='Clave 1')
+				div.form-group
+					input.form-control#clave2(placeholder='Clave 2')
+				button.btn.btn-default(type='submit') Iniciar transmisión
+	div.container#recepcion
+		h2 Panel de Recepción
+		div.row
+			div.panel.panel-default.col-lg-3#consolaEncriptacion
+				div.panel-body(style="height: 300px;overflow-y: scroll;")#contenidoConsola
+					p Consola
+			div.jumbotron.col-lg-offset-1.col-lg-7#cuadroMensajes
+				div.panel.panel-default
+					div.panel-body#panelMensaje(style="height: 300px;overflow-y: scroll;")
 	div.footer
 		div.container-fluid
 			p.text-muted Laboratorio de Criptografía y Protocolos de seguridad
-	
+
+	script.
+		$(function(){
+			//Primero preparo mi recepción
+				var claves = [];
+				
+			});
+		

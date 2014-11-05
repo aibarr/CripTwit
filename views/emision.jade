@@ -9,26 +9,29 @@ body
 	div.container#claves
 		h2 Ingrese las claves de la transmisión
 		div.row
-			form.col-lg-offset-3.col-lg-6(role='form')
+			form.col-lg-offset-3.col-lg-6#entraClave(role='form')
 				div.form-group
 					input.form-control#vectorInicial(placeholder='Vector Inicial')
 				div.form-group
 					input.form-control#clave1(placeholder='Clave 1')
+				div.form-group
+					input.form-control#clave2(placeholder='Clave 2')
+				button.btn.btn-default(type='submit') Iniciar transmisión
 	//para la emision de mensajes
 	div.container#emision
 		h2 Panel de Envío
 		div.row
-			div.panel.panel-default.col-lg-3#consolaEncriptacion
-				//div.panel.panel-heading Consola de Encriptación
+			div.panel.panel-default.col-lg-3#consolaEncriptacion				
 				div.panel-body(style="height: 300px;overflow-y: scroll;")#contenidoConsola
-					p#contenido Consola		
+					p Consola
 			div.jumbotron.col-lg-offset-1.col-lg-7#cuadroMensajes
 				div.panel.panel-default
-					div.panel-body(style="height: 250px;overflow-y: scroll;")
-				div.input-group
-					input.form-control(placeholder='Escriba su mensaje' type='text')
-					span.input-group-btn
-						button.btn.btn-default(type='button') Enviar
+					div.panel-body#panelMensaje(style="height: 250px;overflow-y: scroll;")
+				form(id="enviaMensaje")
+					div.input-group
+						input.form-control#contenidoMensaje(placeholder='Escriba su mensaje' type='text')
+						span.input-group-btn
+							button.btn.btn-default#veteMensaje(type='button submit') Enviar
 	div.footer
 			div.container-fluid
 				p.text-muted Laboratorio de Criptografía y Protocolos de seguridad
@@ -36,5 +39,66 @@ body
 
 		
 script.
-	//primero nos conectamos al servidor
-	var socket = io.connect();
+	$(function(){
+		//escondamos la parte de mensaje primero
+		$('#emision').hide();
+		//debemos poner en variables algunas cosas de la pagina
+
+		//Variables de claves
+		var $initialVector = $('#vectorInicial');
+		var $keys = $('#claves');
+		var keyArray = [];
+		var $entryKeys = $('#entraClave');
+
+		//Variables de Mensaje
+		var $sentMessage = $('#enviaMensaje');
+		var $Message = $('#contenidoMensaje');
+		var $MessagePanel = $('#panelMensaje');
+
+		//Variables de consola
+		var $consola = $('#contenidoConsola');
+
+		//nos conectamos al servidor
+		var socket = io.connect();
+
+		//Cuando entremos las claves
+		$entryKeys.submit(function(e){
+			e.preventDefault();
+			$keys.hide();
+			$('#emision').show();
+			//Avisamos que emitiremos mensajes
+			socket.emit('enviar', null, function(data){
+				if(data){
+					console.log('Me dijeron que hay gente');
+					//tengo con quien hablar
+				}else{
+					console.log('Me dijeron que hay que esperar');
+					//tengo que esperar para hablar
+					document.getElementById('veteMensaje').disable = true;
+					document.getElementById('contenidoMensaje').disable = true;
+				};
+			});
+		});
+		
+		//revisamos si tenemos a quien enviar
+
+		//ENVIAMOS EL MENSAJE
+		$sentMessage.submit(function(e){
+			e.preventDefault();
+			//agregamos al panel el mensaje a enviar
+			$MessagePanel.append('Mensaje: '+ Message.val() + '<br/>');
+			var aCifrar = Message.val();		
+			//Aquí hay que encriptar el mensaje
+			//primero preparamos los datos para enviar
+
+			var datos = {				
+				mensaje: aCifrar
+			};
+			//Y enviamos el mensaje
+			socket.emit('mensaje', datos);
+
+		});
+		
+		
+	});
+	
