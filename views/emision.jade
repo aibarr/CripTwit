@@ -13,9 +13,7 @@ body
 				div.form-group
 					input.form-control#vectorInicial(placeholder='Vector Inicial')
 				div.form-group
-					input.form-control#clave1(placeholder='Clave 1')
-				div.form-group
-					input.form-control#clave2(placeholder='Clave 2')
+					input.form-control#clave(placeholder='Clave DES')				
 				button.btn.btn-default(type='submit') Iniciar transmisión
 	//para la emision de mensajes
 	div.container#emision
@@ -45,9 +43,11 @@ script.
 		//debemos poner en variables algunas cosas de la pagina
 
 		//Variables de claves
-		var $initialVector = $('#vectorInicial');
-		var $keys = $('#claves');
-		var keyArray = [];
+		var initialVector = "";
+		var ivP = 'abcdefgh';
+		var llave = '';
+		var llaveP = 'abcdefgh';
+		var $keys = $('#claves');		
 		var $entryKeys = $('#entraClave');
 
 		//Variables de Mensaje
@@ -64,6 +64,10 @@ script.
 		//Cuando entremos las claves
 		$entryKeys.submit(function(e){
 			e.preventDefault();
+			initialVector = $('#vectorInicial').val();
+			llave = $('#claveDES').val();
+			typeof llave;
+
 			$keys.hide();
 			$('#emision').show();
 			//Avisamos que emitiremos mensajes
@@ -93,14 +97,9 @@ script.
 			//agregamos al panel el mensaje a enviar
 			$MessagePanel.append('Mensaje: '+ $Message.val() + '<br/>');
 			var aCifrar = $Message.val();
-			//Aquí hay que encriptar el mensaje
-			//primero preparamos los datos para enviar
 
-			var datos = {				
-				mensaje: aCifrar
-			};
-			//Y enviamos el mensaje
-			socket.emit('mensaje', datos);
+			//Y encriptamos y enviamos el mensaje
+			encDes(aCifrar, llaveP, 0, $consola, ivP, socket);
 
 			//Limpiamos el cuadro de mensaje
 			$Message.val('');

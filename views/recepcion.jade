@@ -11,9 +11,7 @@ body
 				div.form-group
 					input.form-control#vectorInicial(placeholder='Vector Inicial')
 				div.form-group
-					input.form-control#clave1(placeholder='Clave 1')
-				div.form-group
-					input.form-control#clave2(placeholder='Clave 2')
+					input.form-control#clave(placeholder='Clave DES')				
 				button.btn.btn-default(type='submit') Iniciar transmisión
 	div.container#recepcion
 		h2 Panel de Recepción
@@ -34,13 +32,17 @@ body
 			$('#recepcion').hide();
 
 			//Variables de claves
-			var $initialVector = $('#vectorInicial');
-			var $keys = $('#claves');
-			var keyArray = [];
+			var initialVector;
+			var ivP = 'abcdefgh';
+			var llave;
+			var llaveP = 'abcdefgh';
+			
 			var $entryKeys = $('#entraClave');
 
 			//variables para mensajes
 			var $messagePanel = $('#panelMensaje');
+			var tPlano = "";
+			var tCifrado = "";
 
 			//variables de la consola
 			var $consola = $('#contenidoConsola');
@@ -61,7 +63,7 @@ body
 					}else{
 						//no hay emisor
 						console.log('No hay quien envíe');
-					}
+						}
 					});
 				});
 
@@ -74,14 +76,23 @@ body
 			socket.on('mensaje', function(data){
 				//Mostramos en consola la llegada del mensaje
 				$consola.append('Llegó un mensaje <br/>');
+				console.log('Llegó un ' + data.modo);
 
-				//Aquí hay que desencriptar
-
-				//una vez desencriptado, lo ponemos en el panel de mensaje
-				$messagePanel.append('Mensaje: ' + data.mensaje +'<br/>');
-
-
-				});
-					
+				switch (data.modo){
+					case 'bloque':						
+						tCifrado += data.bloque;
+						console.log('Pegando bloque' + tCifrado);
+						break;
+					case 'finTransmision':
+						console.log('desencriptando');
+					 	tPlano = encDes (tCifrado, llaveP, 1, $consola, ivP, socket);
+					 	console.log('Bloque '+ tPlano);
+					 	//una vez desencriptado, lo ponemos en el panel de mensaje
+					 	$messagePanel.append('Mensaje: ' + tPlano +'<br/>');
+					 	tCifrado = "";
+					 	tPlano = "";
+					 	break;
+					}
+				});					
 			});
 		
