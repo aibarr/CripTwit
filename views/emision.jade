@@ -74,8 +74,8 @@ script.
 				}else{
 					console.log('Me dijeron que hay que esperar');
 					//tengo que esperar para hablar
-					document.getElementById('veteMensaje').disable = true;
-					document.getElementById('contenidoMensaje').disable = true;
+					document.getElementById('veteMensaje').disabled = true;
+					document.getElementById('contenidoMensaje').disabled = true;
 				};
 			});
 		});
@@ -83,8 +83,8 @@ script.
 		//Nos avisan que hay receptor
 		socket.on('transmite', function(data){
 			console.log('Ahora hay receptor')
-			document.getElementById('veteMensaje').disable = true;
-			document.getElementById('contenidoMensaje').disable = true;
+			document.getElementById('veteMensaje').disabled = false;
+			document.getElementById('contenidoMensaje').disabled = false;
 			});
 
 		//ENVIAMOS EL MENSAJE

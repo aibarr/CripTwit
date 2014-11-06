@@ -35,7 +35,7 @@ app.get('/emision', routes.emision);
 app.get('/recepcion', routes.recepcion);
 
 app.listen(3000, function(){
-  console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+  console.log("Servidor de Express escuchando en el puerto %d en modo %s", app.address().port, app.settings.env);
 });
 
 //Configurando socket
@@ -76,6 +76,7 @@ io.sockets.on('connect', function(socket){
 
   socket.on('recibir', function(data, callback){
     //digo que sí hay un receptor presente
+    console.log('Tenemos al receptor');
     receptor.soquete = socket;
     receptor.hay = 1;
     socket.rol = 'receptor';
