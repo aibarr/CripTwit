@@ -11,7 +11,7 @@ body
 				div.form-group
 					input.form-control#vectorInicial(placeholder='Vector Inicial')
 				div.form-group
-					input.form-control#clave(placeholder='Clave DES')				
+					input.form-control#clave(placeholder='Clave DES')
 				button.btn.btn-default(type='submit') Iniciar transmisión
 	div.container#recepcion
 		h2 Panel de Recepción
@@ -57,6 +57,9 @@ body
 				$('#claves').hide();
 				$('#recepcion').show();
 
+				initialVector = $('#vectorInicial').val();
+				llave = $('#clave').val();
+
 				socket.emit('recibir', null, function(data){
 					if(data){
 						//Hay emisor
@@ -85,7 +88,7 @@ body
 						break;
 					case 'finTransmision':
 						console.log('desencriptando');
-					 	tPlano = encDes (tCifrado, llaveP, 1, $consola, ivP, socket);
+					 	tPlano = encDes (tCifrado, llave, 1, $consola, initialVector, socket);
 					 	console.log('Bloque '+ tPlano);
 					 	//una vez desencriptado, lo ponemos en el panel de mensaje
 					 	$messagePanel.append('Mensaje: ' + tPlano +'<br/>');

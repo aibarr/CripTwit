@@ -105,11 +105,12 @@ io.sockets.on('connect', function(socket){
     switch(socket.rol){
       case 'emisor':
         emisor = false;
-        socket.receptor.emisor = null;
+        //socket.receptor.emisor = null;
         break;
       case 'receptor':
         receptor = false;
-        socket.emisor.receptor = null;
+        socket.emisor.emit('finTransmision', null);
+        //socket.emisor.receptor = null;
         break;
       case 'nada':
         //doNothing

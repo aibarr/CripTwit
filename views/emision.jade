@@ -65,7 +65,7 @@ script.
 		$entryKeys.submit(function(e){
 			e.preventDefault();
 			initialVector = $('#vectorInicial').val();
-			llave = $('#claveDES').val();
+			llave = $('#clave').val();
 			typeof llave;
 
 			$keys.hide();
@@ -99,12 +99,17 @@ script.
 			var aCifrar = $Message.val();
 
 			//Y encriptamos y enviamos el mensaje
-			encDes(aCifrar, llaveP, 0, $consola, ivP, socket);
+			encDes(aCifrar, llave, 0, $consola, initialVector, socket);
 
 			//Limpiamos el cuadro de mensaje
 			$Message.val('');
 
 		});
+
+		socket.on('finTransmision', function(data){
+			document.getElementById('veteMensaje').disabled = true;
+			document.getElementById('contenidoMensaje').disabled = true;
+			})
 		
 		
 	});
