@@ -80,14 +80,19 @@ script.
 			});
 		});
 		
-		//revisamos si tenemos a quien enviar
+		//Nos avisan que hay receptor
+		socket.on('transmite', function(data){
+			console.log('Ahora hay receptor')
+			document.getElementById('veteMensaje').disable = true;
+			document.getElementById('contenidoMensaje').disable = true;
+			});
 
 		//ENVIAMOS EL MENSAJE
 		$sentMessage.submit(function(e){
 			e.preventDefault();
 			//agregamos al panel el mensaje a enviar
-			$MessagePanel.append('Mensaje: '+ Message.val() + '<br/>');
-			var aCifrar = Message.val();		
+			$MessagePanel.append('Mensaje: '+ $Message.val() + '<br/>');
+			var aCifrar = $Message.val();
 			//Aquí hay que encriptar el mensaje
 			//primero preparamos los datos para enviar
 
@@ -96,6 +101,9 @@ script.
 			};
 			//Y enviamos el mensaje
 			socket.emit('mensaje', datos);
+
+			//Limpiamos el cuadro de mensaje
+			$Message.val('');
 
 		});
 		

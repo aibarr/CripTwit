@@ -30,8 +30,58 @@ body
 
 	script.
 		$(function(){
-			//Primero preparo mi recepción
-				var claves = [];
-				
+			//Ocultemos la parte de mensajes
+			$('#recepcion').hide();
+
+			//Variables de claves
+			var $initialVector = $('#vectorInicial');
+			var $keys = $('#claves');
+			var keyArray = [];
+			var $entryKeys = $('#entraClave');
+
+			//variables para mensajes
+			var $messagePanel = $('#panelMensaje');
+
+			//variables de la consola
+			var $consola = $('#contenidoConsola');
+
+			//Me conecto al servidor
+			var socket = io.connect();
+
+			//cuando entremos las claves
+			$entryKeys.submit(function(e){
+				e.preventDefault();
+
+				$('#claves').hide();
+				$('#recepcion').show();
+
+				socket.emit('recibir', null, function(data){
+					if(data){
+						//Hay emisor
+					}else{
+						//no hay emisor
+						console.log('No hay quien envíe');
+					}
+					});
+				});
+
+			//nos avisan que hay emisor
+			socket.on('transmite', function(data){
+				console.log('Ahora hay emisor');
+				});
+
+			//Cuando llegue un mensaje
+			socket.on('mensaje', function(data){
+				//Mostramos en consola la llegada del mensaje
+				$consola.append('Llegó un mensaje <br/>');
+
+				//Aquí hay que desencriptar
+
+				//una vez desencriptado, lo ponemos en el panel de mensaje
+				$messagePanel.append('Mensaje: ' + data.mensaje +'<br/>');
+
+
+				});
+					
 			});
 		

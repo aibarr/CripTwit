@@ -9,3 +9,11 @@
 .text-muted {
   margin: 20px 50px;
 }
+
+#panelMensaje{
+	font-size: 0.5em;
+}
+
+#contenidoConsola{
+	font-size: 0.8em;
+}

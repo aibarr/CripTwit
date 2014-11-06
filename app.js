@@ -66,6 +66,8 @@ io.sockets.on('connect', function(socket){
       socket.receptor = receptor.soquete;
       callback(true);
       //Y despierto al receptor
+      socket.receptor.emit('transmite');
+      socket.receptor.emisor = socket;
     }else{
       //Sino, aviso que no hay quien reciba
       callback(false);
@@ -83,6 +85,8 @@ io.sockets.on('connect', function(socket){
       socket.emisor = emisor.soquete;
       callback(true);
       //Y despierto al emisor
+      socket.emisor.emit('transmite');
+      socket.emisor.receptor = socket;
     }else{
       //Sino, aviso que no hay quien reciba
       callback(false);
@@ -100,9 +104,11 @@ io.sockets.on('connect', function(socket){
     switch(socket.rol){
       case 'emisor':
         emisor = false;
+        socket.receptor.emisor = null;
         break;
       case 'receptor':
         receptor = false;
+        socket.emisor.receptor = null;
         break;
       case 'nada':
         //doNothing
