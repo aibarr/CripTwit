@@ -56,33 +56,26 @@ function puntosECC(a, b, p, ga, gb){
 	for(i = 0; i < p; i++){
 		paso1[i] = (Math.pow(i,3)+a*i+b)%p;
 	}
-	//return paso1;
 
 	for(i = 0; i < p; i++){
 		paso2[i] = Math.pow(i,2)%p;
 	}
-	//return paso2;
 
 	for(i = 0; i < p; i++){
 		paso3[paso2[i]].push(i);
 	}
-	//return paso3;
 
 	for(i = 0; i < p; i++){
 		paso4[i] = paso3[paso1[i]];
 	}
-	//return paso4[0].length;
 
 	var contador = 0;
-	for(i = 0; i < p; i++){
-		if(paso4[i].length > 0){
-			var aux = [];
-			for(j = 0; j < paso4[i].length; j++){
-				paso5[contador] = []
-				paso5[contador].push(i);
-				paso5[contador].push(paso4[i][j]);
-				contador++;
-			}
+	for(i = 0; i < paso4.length; i++){
+		for(j = 0; j < paso4[i].length; j++){
+			paso5[contador] = []
+			paso5[contador].push(i);
+			paso5[contador].push(paso4[i][j]);
+			contador++;
 		}
 	}
 	return paso5;
