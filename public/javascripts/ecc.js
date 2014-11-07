@@ -41,7 +41,7 @@ function sonCtesValidas(a, b, p){
 }
 
 // Construcción: crea tablas de puntos para constantes ECC dadas
-function puntosECC(a, b, p, ga, gb){
+function puntosECC(a, b, p){
 	var paso1 = [];
 	var paso2 = [];
 	var paso3 = [];
