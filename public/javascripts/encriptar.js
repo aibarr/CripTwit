@@ -54,7 +54,7 @@ function crearLlaves(clave, consolaE){
     temp = ((left >>> 1) ^ right) & 0x55555555; right ^= temp; left ^= (temp << 1);    
 
     //Aqui hay que mostrar el resultado de la primera permutación
-    consolaE.append( left + right + '<br/>');
+    consolaE.append( left.toString(2) + right.toString(2) + '<br/>');
 
 
     //El lado derecho necesita cambiar y obtener los últimos cuatro bits del lado izquierdo
@@ -93,18 +93,24 @@ function crearLlaves(clave, consolaE){
     	consolaE.append('La clave ' + i + ' es: ');
 
     	claves[n++] = lefttemp ^ temp;
-    	consolaE.append(String(claves[n]));    	
+    	var x = lefttemp ^ temp;
+    	consolaE.append(x.toString(2));    	
 
     	claves[n++] = righttemp ^ (temp << 16);
-    	consolaE.append(String(claves[n]) + '<br/>');    	
+    	x = righttemp ^ (temp << 16);
+    	consolaE.append(x.toString(2) + '<br/>');    	
     }
-
     return claves;
-
 };
 
+
+
 function encDes(tPlano, clave, encOrDenc, consolaE, vInicial, socket){
-	consolaE.append('Iniciando encriptación y transmisión');
+	consolaE.append('Iniciando...<br/>');
+
+	var opcion = (encOrDenc) ? 'codificar':'decodificar';
+
+	consolaE.append('Nos disponemos a '+ opcion.toString() + '...<br/>')
 
 	//Declaramos estos arreglos para acelerar las cosas. Servirán para las cajas S
 	var spfunction1 = [0x1010400,0,0x10000,0x1010404,0x1010004,0x10404,0x4,0x10000,0x400,0x1010400,0x1010404,0x400,0x1000404,0x1010004,0x1000000,0x4,0x404,0x1000400,0x1000400,0x10400,0x10400,0x1010000,0x1010000,0x1000404,0x10004,0x1000004,0x1000004,0x10004,0,0x404,0x10404,0x1000000,0x10000,0x1010404,0x4,0x1010000,0x1010400,0x1000000,0x1000000,0x400,0x1010004,0x10000,0x10400,0x1000004,0x400,0x4,0x1000404,0x10404,0x1010404,0x10004,0x1010000,0x1000404,0x1000004,0x404,0x10404,0x1010400,0x404,0x1000400,0x1000400,0,0x10004,0x10400,0,0x1010004];
@@ -138,22 +144,30 @@ function encDes(tPlano, clave, encOrDenc, consolaE, vInicial, socket){
 	//Pasamos el vector inicial a entero
 	cbcleft = (vInicial.charCodeAt(m++) << 24) | (vInicial.charCodeAt(m++) << 16) | (vInicial.charCodeAt(m++) << 8) | vInicial.charCodeAt(m++);
     cbcright = (vInicial.charCodeAt(m++) << 24) | (vInicial.charCodeAt(m++) << 16) | (vInicial.charCodeAt(m++) << 8) | vInicial.charCodeAt(m++);
+    consolaE.append('Pasamos el vector inicial a binario quedando de la forma: ' + cbcleft.toString(2) +  cbcright.toString(2) + '<br/>');
     m = 0;
+
+    consolaE.append('Ahora encriptamos el texto plano en bloques de 8 caracteres (64 bits) <br/>');
 
     //Ahora encriptamos por cada 64 bits del texto plano
     while (m < largoTexto) {
     	//Contamos el numero de bloque
     	k++;
 
+    	consolaE.append('El bloque '+ k +' queda de la forma: <br/>')
+
     	//Pasamos el texto plano a entero
     	left = (tPlano.charCodeAt(m++) << 24) | (tPlano.charCodeAt(m++) << 16) | (tPlano.charCodeAt(m++) << 8) | tPlano.charCodeAt(m++);
     	right = (tPlano.charCodeAt(m++) << 24) | (tPlano.charCodeAt(m++) << 16) | (tPlano.charCodeAt(m++) << 8) | tPlano.charCodeAt(m++);
+    	consolaE.append(left.toString(2) + right.toString(2) + '<br/>');
 
     	//Como haremos CBC, hacemos XOR con el resultado anterior
     	if (encOrDenc) {
+    		consolaE.append('Como vamos a desencriptar, hacemos XOR para el CBC y queda de la forma: <br/>');
     		left ^= cbcleft;
     		right ^= cbcright;
-    	} else {
+    		consolaE.append(left.toString(2) + right.toString(2) + '<br/>');
+    	} else {    		
     		cbcleft2 = cbcleft;
     		cbcright2 = cbcright;
     		cbcleft = left;
@@ -181,23 +195,36 @@ function encDes(tPlano, clave, encOrDenc, consolaE, vInicial, socket){
     	left = ((left << 1) | (left >>> 31));
     	right = ((right << 1) | (right >>> 31)); 
 
+    	consolaE.append('Hacemos la primera permutación de bits quedando: <br/>' + left.toString(2) + right.toString(2) + '<br/>');
+
     	for (j=0; j<vueltas; j+=3) {
     		endloop = looping[j+1];
     		loopinc = looping[j+2];
 		    //Ahora encriptamos o desencriptamos según corresponda
 		    for (i=looping[j]; i!=endloop; i+=loopinc) {
+
+		    	consolaE.append('Ahora hacemos XOR con el lado derecho y la clave ' + i/2 + ' resultando:<br/>');
+
 		    	//Hacemos XOR con la i clave
 		    	right1 = right ^ claves[i]; 
 		        right2 = ((right >>> 4) | (right << 28)) ^ claves[i+1];
 
-		        //El resultado pasa por las cajas S
+		        consolaE.append(right1.toString(2) + right2.toString(2) + '<br/>');
+
+
+		        consolaE.append('Ahora pasamos por las cajas S, ');
+		        consolaE.append('e intercambiamos el lado derecho y el izquierdo, resultando: <br/>');
+		        //El resultado pasa por las cajas S y se intercambia el lado derecho con el izquierdo
 		        temp = left;
 		        left = right;
 		        right = temp ^ (spfunction2[(right1 >>> 24) & 0x3f] | spfunction4[(right1 >>> 16) & 0x3f]
 		            | spfunction6[(right1 >>>  8) & 0x3f] | spfunction8[right1 & 0x3f]
 		            | spfunction1[(right2 >>> 24) & 0x3f] | spfunction3[(right2 >>> 16) & 0x3f]
 		            | spfunction5[(right2 >>>  8) & 0x3f] | spfunction7[right2 & 0x3f]);
+		        consolaE.append(left.toString(2) + right.toString(2) + '<br/>');
+		        
 		      	}
+		      	
 		      	//Intercambiamos el lado derecho y el izquierdo
 		      	temp = left;
 		      	left = right;
@@ -208,6 +235,7 @@ function encDes(tPlano, clave, encOrDenc, consolaE, vInicial, socket){
 	    left = ((left >>> 1) | (left << 31)); 
 	    right = ((right >>> 1) | (right << 31)); 
 
+	    consolaE.append('Finalmente hacemos la ultima permutacion antes del resultado final:<br/>');
 	    //Y hacemos la última permutación
 	    temp = ((left >>> 1) ^ right) & 0x55555555; right ^= temp; left ^= (temp << 1);
 	    temp = ((right >>> 8) ^ left) & 0x00ff00ff; left ^= temp; right ^= (temp << 8);
@@ -215,17 +243,21 @@ function encDes(tPlano, clave, encOrDenc, consolaE, vInicial, socket){
 	    temp = ((left >>> 16) ^ right) & 0x0000ffff; right ^= temp; left ^= (temp << 16);
 	    temp = ((left >>> 4) ^ right) & 0x0f0f0f0f; right ^= temp; left ^= (temp << 4);
 
+	    consolaE.append(left.toString(2) + right.toString(2) + '<br/>');
+
 	    //Como es CBC, hacemos XOR con el resultado anterior
 	    if (encOrDenc) {
 	    	cbcleft = left;
 	    	cbcright = right;
 	    } else {
+	    	consolaE.append('Antes de transmitir, hacemos XOR con el bloque para hacer CBC, resultando: <br/>');	    	
 	    	left ^= cbcleft2;
 	    	right ^= cbcright2;
+	    	consolaE.append(left.toString(2) + right.toString(2) + '<br/>');
 	    }
 	    tempResultado += String.fromCharCode ((left>>>24), ((left>>>16) & 0xff), ((left>>>8) & 0xff), (left & 0xff), (right>>>24), ((right>>>16) & 0xff), ((right>>>8) & 0xff), (right & 0xff));
 
-	    console.log('Bloque Cifrado: ' +tempResultado + '\n');
+	    consolaE.append('Bloque ' + k +' Cifrado: ' +tempResultado + '<br/>Transmitiendo ... <br/>');
 
 	    //Debemos transmitir este resultado temporal
 	    if(!encOrDenc){//Si no tenemos de desencriptar
