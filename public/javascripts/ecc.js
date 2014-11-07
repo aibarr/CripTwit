@@ -7,13 +7,31 @@ function encECC(tPlano){
 	return tCifrado;
 }
 
-function sumaEliptica(a, b){
-	var resultado;
+//Suma eliptica recibe dos arreglos de largo 2 donde
+//el primer elemento del arreglo es el componente x del punto
+//y el segundo elemento es el componente y.
+//La tercera y cuarta variables son las constantes de la curva eliptica.
+function sumaEliptica(x, y, a, b){
+	var resultado = [];
+
+	if(x[0] == y[0] && x[1] == -y[1]){
+		return null;
+	}
+
+	if(x[0] == y[0] && x[1] == y[1]){
+		var lambda = (3*Math.pow(a[0],2)+a)/(2*y[0]);
+	}else{
+		var lambda = (y[1]-y[0])/(x[1]-x[0]);
+	}
+
+	resultado[0] = Math.pow(lambda,2)-x[0]-y[0];
+	resultado[1] = lambda*(x[0]-resultado[0])-x[1]
+
 	return resultado;
 }
 
 function multiEpliptica(veces, multiplicando){
-	var resultado;
+
 	return resultado;
 }
 
