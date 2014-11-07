@@ -48,27 +48,33 @@ function puntosECC(a, b, p, ga, gb){
 	var paso4 = [];
 	var paso5 = [];
 
+	// Inicialización de arreglos multidimensionales
 	for(i = 0; i < p; i++){
 		paso3[i] = [];
 		paso4[i] = [];
 	}
 
+	//paso 1: buscar z=(x^3+ax+b)mod(p)
 	for(i = 0; i < p; i++){
 		paso1[i] = (Math.pow(i,3)+a*i+b)%p;
 	}
 
+	//paso 2: buscar z=(y^2)mod(p)
 	for(i = 0; i < p; i++){
 		paso2[i] = Math.pow(i,2)%p;
 	}
 
+	//paso 3: determinar dónde en el paso 2 se dan los valores del paso 1
 	for(i = 0; i < p; i++){
 		paso3[paso2[i]].push(i);
 	}
 
+	//paso 4: determinar qué valores hay en la posición del paso 3 que corresponde al valor del paso 1
 	for(i = 0; i < p; i++){
 		paso4[i] = paso3[paso1[i]];
 	}
 
+	//paso 5: los puntos validos son (posición paso 1, valores paso 4 para dicha posición)
 	var contador = 0;
 	for(i = 0; i < paso4.length; i++){
 		for(j = 0; j < paso4[i].length; j++){
@@ -78,5 +84,8 @@ function puntosECC(a, b, p, ga, gb){
 			contador++;
 		}
 	}
+
+	//retorna arreglo de dimensiones (#e, 2), donde cada elemento contiene un par de valores.
+	//El primer valor es el componente x del punto, el segundo es el componente y.
 	return paso5;
 }
