@@ -1,10 +1,8 @@
-//recepciónECC
-
 body
 	div.page-header(style="margin: 0 20px;")
 			h1 CripTwit
 				small  Laboratorio de Criptografía y Protocolos de seguridad
-	h3 Recepción de Mensaje ECC
+	h3 Emisión de Mensaje
 	//El usuario debe ingresar las claves de la transmisión	
 	div.container#claves
 		h2 Ingrese las claves de la transmisión
@@ -13,8 +11,9 @@ body
 				div.form-group
 					input.form-control#vectorInicial(placeholder='Vector Inicial')
 				div.form-group
-					input.form-control#clave(placeholder='Clave DES')				
+					input.form-control#clave(placeholder='Clave DES')
 				button.btn.btn-default(type='submit') Iniciar transmisión
+	//para la emision de mensajes
 	div.container#recepcion
 		h2 Panel de Recepción
 		div.row
@@ -25,7 +24,8 @@ body
 				div.panel.panel-default
 					div.panel-body#panelMensaje(style="height: 300px;overflow-y: scroll;")
 	div.footer
-		div.container-fluid
-			p.text-muted Laboratorio de Criptografía y Protocolos de seguridad
+			div.container-fluid
+				p.text-muted Laboratorio de Criptografía y Protocolos de seguridad
 
 	script.
+		var doNothing;
