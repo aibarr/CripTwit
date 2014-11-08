@@ -19,7 +19,7 @@ function sumaEliptica(x, y, a, b){
 	}
 
 	if(x[0] == y[0] && x[1] == y[1]){
-		var lambda = (3*Math.pow(a[0],2)+a)/(2*y[0]);
+		var lambda = (3*Math.pow(x[0],2)+a)/(2*y[0]);
 	}else{
 		var lambda = (y[1]-y[0])/(x[1]-x[0]);
 	}
@@ -30,8 +30,14 @@ function sumaEliptica(x, y, a, b){
 	return resultado;
 }
 
-function multiEpliptica(veces, multiplicando){
-
+//Multiplicacion eliptica recibe un valor entero y un arreglo de largo 2.
+//Se suma el arreglo la cantidad de veces indicada por el valor entero.
+//Además se reciben las constantes de la curva elíptica.
+function multiEpliptica(veces, multiplicando, a, b){
+	var resultado = [];
+	for(i = 0; i < veces; i++){
+		resultado = sumaEliptica(multiplicando, multiplicando, a, b);
+	}
 	return resultado;
 }
 
@@ -106,4 +112,19 @@ function puntosECC(a, b, p){
 	//retorna arreglo de dimensiones (#e, 2), donde cada elemento contiene un par de valores.
 	//El primer valor es el componente x del punto, el segundo es el componente y.
 	return paso5;
+}
+
+//Validación: comprueba si la clave secreta es válida.
+function esClaveValida(c, a, b, p){
+	if(c < 1){
+		return false;
+	}
+
+	var puntos = puntosECC(a, b, p).length;
+
+	if(c > puntos-1){
+		return false;
+	}
+
+	return true;
 }
