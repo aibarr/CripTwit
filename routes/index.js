@@ -12,5 +12,13 @@ exports.emision = function(req, res){
 };
 
 exports.recepcion = function(req, res){
-  res.render('recepcion', { title: 'CripTwit Recepcion de Mensaje' })
+  res.render('recepcion', { title: 'CripTwit Recepción de Mensaje' })
+};
+
+exports.emisionecc = function(req, res){
+  res.render('emisionecc', { title: 'CripTwit Emisión de Mensaje ECC' })
+};
+
+exports.recepcionecc = function(req, res){
+  res.render('recepcionecc', { title: 'CripTwit Recepción de Mensaje ECC' })
 };

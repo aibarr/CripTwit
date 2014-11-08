@@ -33,6 +33,8 @@ app.configure('production', function(){
 app.get('/', routes.index);
 app.get('/emision', routes.emision);
 app.get('/recepcion', routes.recepcion);
+app.get('/emisionecc', routes.emisionecc);
+app.get('/recepcionecc', routes.recepcionecc);
 
 app.listen(3000, function(){
   console.log("Servidor de Express escuchando en el puerto %d en modo %s", app.address().port, app.settings.env);
