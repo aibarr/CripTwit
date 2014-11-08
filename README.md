@@ -4,8 +4,8 @@ CripTwit
 Laboratorio destinado a la Asignatura de Criptografía y Protocolos de seguridad. Es una aplicación que permite enviar mensajes de 140 de manera encriptada entre dos participantes.
 
 Requerimientos
-	- Node.js 1.7.0
-	- Compilador de C (Le recomendamos que utilice alguna distribución de Linux o OSx)
+- Node.js 1.7.0
+- Compilador de C (Le recomendamos que utilice alguna distribución de Linux o OSx)
 
 Para instalar, descomprima el archivo ZIP en alguna carpeta de su computadora y acceda a ella mediante una terminal o ejecutor de comandos.
 Desde ahí ejecute el comando
